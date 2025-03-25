@@ -771,6 +771,17 @@ end
  local MainTab = Window:CreateTab("📜 More", nil) -- Title, Image
 
  local Button = MainTab:CreateButton({
+    Name = "📝 Account Stats",
+    Callback = function()
+             local IsStudio = false
+             pcall(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Its434/Scripts/refs/heads/main/Stats"))()
+                end)
+    end,
+ 
+ })
+ 
+ local Button = MainTab:CreateButton({
     Name = "🎹 Auto Piano",
     Callback = function()
              local IsStudio = false
