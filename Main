@@ -24,11 +24,11 @@ local Window = Rayfield:CreateWindow({
 
    KeySystem = true, -- Set this to true to use our key system
    KeySettings = {
-      Title = "🔊 Mic up",
-      Subtitle = "Made By 434",
-      Note = "Discord: @movement.exe For the key!", -- Use this to tell the user how to get a key
+      Title = "Mic up",
+      Subtitle = "Key System",
+      Note = "The key is Easy!", -- Use this to tell the user how to get a key
       FileName = "434 Script Hub", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
       GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
       Key = {"434"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
@@ -36,7 +36,112 @@ local Window = Rayfield:CreateWindow({
 
 local MainTab = Window:CreateTab("🏠Home", nil) -- Title, Image
 
-Rayfield:Notify({
+local Section = MainTab:CreateSection("Main")
+
+local Slider = MainTab:CreateSlider({
+	Name = "⚡ WalkSpeed Slider",
+	Range = {1, 350},
+	Increment = 1,
+	Suffix = "Speed",
+	CurrentValue = 16,
+	Flag = "sliderws", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+	Callback = function(Value)
+		 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
+	end,
+ })
+  
+ local Button = MainTab:CreateButton({
+	Name = "🦘 Infinite Jump | Toggle",
+	Callback = function()
+		--Toggles the infinite jump between on or off on every script run
+ _G.infinjump = not _G.infinjump
+ 
+ if _G.infinJumpStarted == nil then
+	 --Ensures this only runs once to save resources
+	 _G.infinJumpStarted = true
+	 
+	 --Notifies readiness
+	 game.StarterGui:SetCore("SendNotification", {Title="434 Hub"; Text="Infinite Jump Activated!"; Duration=5;})
+ 
+	 --The actual infinite jump
+	 local plr = game:GetService('Players').LocalPlayer
+	 local m = plr:GetMouse()
+	 m.KeyDown:connect(function(k)
+		 if _G.infinjump then
+			 if k:byte() == 32 then
+			 humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+			 humanoid:ChangeState('Jumping')
+			 wait()
+			 humanoid:ChangeState('Seated')
+			 end
+		 end
+	 end)
+ end
+	end,
+ })
+ 
+ local Button = MainTab:CreateButton({
+    Name = "👻 Noclip | Rejoin To Turn off",
+    Callback = function()
+             local IsStudio = false
+			 local Noclip = nil
+			 local Clip = nil
+			 
+			 function noclip()
+				 Clip = false
+				 local function Nocl()
+					 if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+						 for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+							 if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+								 v.CanCollide = false
+							 end
+						 end
+					 end
+					 wait(0.21) -- basic optimization
+				 end
+				 Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+			 end
+			 
+			 function clip()
+				 if Noclip then Noclip:Disconnect() end
+				 Clip = true
+			 end
+			 
+			 noclip() -- to toggle noclip() and clip()
+ 
+    end,
+ })
+ 
+ local Button = MainTab:CreateButton({
+	Name = "📍 tp tool ",
+	Callback = function()
+			 local IsStudio = false
+			 mouse = game.Players.LocalPlayer:GetMouse()
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Click Teleport"
+tool.Activated:connect(function()
+local pos = mouse.Hit+Vector3.new(0,2.5,0)
+pos = CFrame.new(pos.X,pos.Y,pos.Z)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
+ 
+	end,
+ })
+ 
+ local Button = MainTab:CreateButton({
+    Name = "🔍 Infinite Zoom",
+    Callback = function()
+             local IsStudio = false
+			 game:GetService("Players").LocalPlayer.CameraMaxZoomDistance = math.huge
+ 
+    end,
+ })
+ 
+ local Section = MainTab:CreateSection("Misc")
+ 
+ Rayfield:Notify({
    Title = "Script Enjected...",
    Content = "434 is Daddy",
    Duration = 5,
@@ -49,6 +154,20 @@ Rayfield:Notify({
       end
    },
 },
+})
+
+local Button = MainTab:CreateButton({
+   Name = "🌌 No Void",
+   Callback = function()
+            local IsStudio = false
+local Workspace = game:GetService("Workspace");
+local Players = game:GetService("Players");
+local Player = Players.LocalPlayer
+local Terrain = Workspace.Terrain
+
+Terrain:FillBlock(CFrame.new(66, -10, 72.5), Vector3.new(7500, 16, 7500), Enum.Material.Asphalt)
+
+   end,
 })
 
 local Button = MainTab:CreateButton({
@@ -69,19 +188,7 @@ local Button = MainTab:CreateButton({
     end,
  })
 
-local Button = MainTab:CreateButton({
-   Name = "🌌 No Void",
-   Callback = function()
-            local IsStudio = false
-local Workspace = game:GetService("Workspace");
-local Players = game:GetService("Players");
-local Player = Players.LocalPlayer
-local Terrain = Workspace.Terrain
 
-Terrain:FillBlock(CFrame.new(66, -10, 72.5), Vector3.new(1000, 16, 1000), Enum.Material.Asphalt)
-
-   end,
-})
 
 local Button = MainTab:CreateButton({
     Name = "⌛ Stats | Anti Afk ",
