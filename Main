@@ -24,7 +24,7 @@ local Window = Rayfield:CreateWindow({
 
    KeySystem = true, -- Set this to true to use our key system
    KeySettings = {
-      Title = "🎤 Mic up",
+      Title = "🔊 Mic up",
       Subtitle = "Made By 434",
       Note = "Discord: @movement.exe For the key!", -- Use this to tell the user how to get a key
       FileName = "434 Script Hub", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
