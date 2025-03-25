@@ -1,0 +1,148 @@
+-- 🌟 Services
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local HttpService = game:GetService("HttpService")
+
+-- 🌟 GUI Setup
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.CoreGui
+
+local Frame = Instance.new("Frame")
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0, 280, 0, 320)
+Frame.Position = UDim2.new(0.5, -140, 0.4, -160)
+Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Frame.BorderSizePixel = 0
+Frame.Draggable = true
+Frame.Active = true
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0.1, 0)
+UICorner.Parent = Frame
+
+-- 🌟 Title
+local Title = Instance.new("TextLabel")
+Title.Parent = Frame
+Title.Size = UDim2.new(1, 0, 0, 25)
+Title.BackgroundTransparency = 1
+Title.Text = "🔍 Player Stats"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 16
+
+-- 🌟 Input Box
+local InputBox = Instance.new("TextBox")
+InputBox.Parent = Frame
+InputBox.Size = UDim2.new(0.8, 0, 0, 30)
+InputBox.Position = UDim2.new(0.1, 0, 0.12, 0)
+InputBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+InputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+InputBox.PlaceholderText = "Enter Username..."
+InputBox.Font = Enum.Font.SourceSans
+InputBox.TextSize = 14
+
+local InputCorner = Instance.new("UICorner")
+InputCorner.CornerRadius = UDim.new(0.1, 0)
+InputCorner.Parent = InputBox
+
+-- 🌟 Search Button
+local SearchButton = Instance.new("TextButton")
+SearchButton.Parent = Frame
+SearchButton.Size = UDim2.new(0.8, 0, 0, 30)
+SearchButton.Position = UDim2.new(0.1, 0, 0.25, 0)
+SearchButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+SearchButton.Text = "Search"
+SearchButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SearchButton.Font = Enum.Font.SourceSansBold
+SearchButton.TextSize = 14
+
+local ButtonCorner = Instance.new("UICorner")
+ButtonCorner.CornerRadius = UDim.new(0.1, 0)
+ButtonCorner.Parent = SearchButton
+
+-- 🌟 Avatar Image
+local AvatarImage = Instance.new("ImageLabel")
+AvatarImage.Parent = Frame
+AvatarImage.Size = UDim2.new(0, 80, 0, 80)
+AvatarImage.Position = UDim2.new(0.5, -40, 0.38, 0)
+AvatarImage.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+AvatarImage.BorderSizePixel = 0
+
+local AvatarCorner = Instance.new("UICorner")
+AvatarCorner.CornerRadius = UDim.new(1, 0)
+AvatarCorner.Parent = AvatarImage
+
+-- 🌟 Info Label
+local InfoLabel = Instance.new("TextLabel")
+InfoLabel.Parent = Frame
+InfoLabel.Size = UDim2.new(0.9, 0, 0, 110)
+InfoLabel.Position = UDim2.new(0.05, 0, 0.65, 0)
+InfoLabel.BackgroundTransparency = 1
+InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+InfoLabel.Text = "User Info Will Appear Here..."
+InfoLabel.TextWrapped = true
+InfoLabel.Font = Enum.Font.SourceSans
+InfoLabel.TextSize = 14
+
+-- 🌟 Made by 434 (RGB)
+local CreditLabel = Instance.new("TextLabel")
+CreditLabel.Parent = Frame
+CreditLabel.Size = UDim2.new(1, 0, 0, 20)
+CreditLabel.Position = UDim2.new(0, 0, 0.9, 0)
+CreditLabel.BackgroundTransparency = 1
+CreditLabel.Text = "Made by: 434"
+CreditLabel.Font = Enum.Font.SourceSansBold
+CreditLabel.TextSize = 15
+
+-- RGB Effect
+spawn(function()
+    while true do
+        for hue = 0, 1, 0.01 do
+            CreditLabel.TextColor3 = Color3.fromHSV(hue, 1, 1)
+            wait(0.05)
+        end
+    end
+end)
+
+-- 🌟 Search Function
+SearchButton.MouseButton1Click:Connect(function()
+    local username = InputBox.Text
+    if username == "" then
+        InfoLabel.Text = "❌ Please enter a username!"
+        return
+    end
+
+    local success, userId = pcall(function()
+        return Players:GetUserIdFromNameAsync(username)
+    end)
+
+    if success then
+        local playerInfo = Players:GetNameFromUserIdAsync(userId)
+        local friendCount = 0
+        local gamePlaying = "Not in-game"
+        
+        -- Get Friend Count
+        local successFriends, friendsPages = pcall(function()
+            return Players:GetFriendsAsync(userId)
+        end)
+
+        if successFriends then
+            for _ in pairs(friendsPages:GetCurrentPage()) do
+                friendCount = friendCount + 1
+            end
+        end
+
+        -- Get Avatar Thumbnail
+        local thumbnailUrl, _ = Players:GetUserThumbnailAsync(userId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
+        AvatarImage.Image = thumbnailUrl
+
+        -- Display User Info
+        InfoLabel.Text = "✔️ Username: " .. playerInfo ..
+                         "\n🔹 Display Name: " .. username ..
+                         "\n🔹 User ID: " .. userId ..
+                         "\n🔹 Friend Count: " .. friendCount ..
+                         "\n🔹 Currently Playing: " .. gamePlaying
+    else
+        InfoLabel.Text = "❌ User not found!"
+    end
+end)
