@@ -165,7 +165,7 @@ local Players = game:GetService("Players");
 local Player = Players.LocalPlayer
 local Terrain = Workspace.Terrain
 
-Terrain:FillBlock(CFrame.new(66, -10, 72.5), Vector3.new(10000, 8, 10000), Enum.Material.Asphalt)
+Terrain:FillBlock(CFrame.new(66, -10, 72.5), Vector3.new(10000, 16, 10000), Enum.Material.Asphalt)
 
    end,
 })
