@@ -963,7 +963,7 @@ footerLabel.BackgroundTransparency = 1
 footerLabel.Font = Enum.Font.GothamBold
 footerLabel.TextSize = 14
 footerLabel.TextStrokeTransparency = 0.5
-footerLabel.Text = "Made by GPTexploits"
+footerLabel.Text = "Made by 434"
 footerLabel.TextXAlignment = Enum.TextXAlignment.Center
 
 local colors = {
